@@ -29,6 +29,7 @@ final class PageController extends AbstractController
         return $this->render('page/blog.html.twig', []);
     }
 
+
 }
 
 
