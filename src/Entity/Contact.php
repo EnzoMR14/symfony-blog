@@ -3,31 +3,36 @@
 namespace App\Entity;
 
 use App\Repository\ContactRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    private $id;
 
-    #[ORM\Column(length: 255)]
-    private ?string $firstName = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'Field `First Name` is mandatory')]
+    private $FirstName;
 
-    #[ORM\Column(length: 255)]
-    private ?string $lastName = null;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private $LastName;
 
-    #[ORM\Column(length: 255)]
-    private ?string $email = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Email(message: '{{ value }} is not a valid email')]
+    private $Email;
 
-    #[ORM\Column(length: 255)]
-    private ?string $subject = null;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank(message: 'Field `Subject` is mandatory')]
+    private $Subject;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $message = null;
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'Field `Message` is mandatory')]
+    private $Message;
 
     public function getId(): ?int
     {
@@ -36,60 +41,60 @@ class Contact
 
     public function getFirstName(): ?string
     {
-        return $this->firstName;
+        return $this->FirstName;
     }
 
-    public function setFirstName(string $firstName): static
+    public function setFirstName(string $FirstName): self
     {
-        $this->firstName = $firstName;
+        $this->FirstName = $FirstName;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->lastName;
+        return $this->LastName;
     }
 
-    public function setLastName(string $lastName): static
+    public function setLastName(?string $LastName): self
     {
-        $this->lastName = $lastName;
+        $this->LastName = $LastName;
 
         return $this;
     }
 
     public function getEmail(): ?string
     {
-        return $this->email;
+        return $this->Email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $Email): self
     {
-        $this->email = $email;
+        $this->Email = $Email;
 
         return $this;
     }
 
     public function getSubject(): ?string
     {
-        return $this->subject;
+        return $this->Subject;
     }
 
-    public function setSubject(string $subject): static
+    public function setSubject(string $Subject): self
     {
-        $this->subject = $subject;
+        $this->Subject = $Subject;
 
         return $this;
     }
 
     public function getMessage(): ?string
     {
-        return $this->message;
+        return $this->Message;
     }
 
-    public function setMessage(string $message): static
+    public function setMessage(string $Message): self
     {
-        $this->message = $message;
+        $this->Message = $Message;
 
         return $this;
     }

@@ -16,17 +16,8 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $file = null;
 
-    #[ORM\Column]
-    private ?int $numLikes = null;
-
-    #[ORM\Column]
-    private ?int $numViews = null;
-
-    #[ORM\Column]
-    private ?int $numDownloads = null;
-
     #[ORM\ManyToOne(inversedBy: 'images')]
-    private ?Category $category = null;
+    private ?Category $Category = null;
 
     public function getId(): ?int
     {
@@ -45,50 +36,14 @@ class Image
         return $this;
     }
 
-    public function getNumLikes(): ?int
-    {
-        return $this->numLikes;
-    }
-
-    public function setNumLikes(int $numLikes): static
-    {
-        $this->numLikes = $numLikes;
-
-        return $this;
-    }
-
-    public function getNumViews(): ?int
-    {
-        return $this->numViews;
-    }
-
-    public function setNumViews(int $numViews): static
-    {
-        $this->numViews = $numViews;
-
-        return $this;
-    }
-
-    public function getNumDownloads(): ?int
-    {
-        return $this->numDownloads;
-    }
-
-    public function setNumDownloads(int $numDownloads): static
-    {
-        $this->numDownloads = $numDownloads;
-
-        return $this;
-    }
-
     public function getCategory(): ?Category
     {
-        return $this->category;
+        return $this->Category;
     }
 
-    public function setCategory(?Category $category): static
+    public function setCategory(?Category $Category): static
     {
-        $this->category = $category;
+        $this->Category = $Category;
 
         return $this;
     }

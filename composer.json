@@ -23,6 +23,11 @@
         "symfony/validator": "6.4.*",
         "symfony/yaml": "6.4.*"
     },
+    "require-dev": {
+        "symfony/maker-bundle": "^1.67",
+        "symfony/stopwatch": "6.4.*",
+        "symfony/web-profiler-bundle": "6.4.*"
+    },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
@@ -68,13 +73,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.4.*",
-            "docker": false
+            "require": "6.4.*"
         }
-    },
-    "require-dev": {
-        "symfony/maker-bundle": "^1.67",
-        "symfony/stopwatch": "6.4.*",
-        "symfony/web-profiler-bundle": "6.4.*"
     }
 }
