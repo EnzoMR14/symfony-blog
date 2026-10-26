@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}New Post{% endblock %}
+{% block body %}
+<!-- Principal Content Start -->
+   <div id="new-post" style="padding-top: 80px; padding-bottom: 60px;">
+      <div class="container">
+         <div class="col-xs-12 col-sm-8 col-sm-push-2">
+            <h1>New Post</h1>
+            <hr>
+            {{ form(form, {'attr': {'class': 'form-horizontal', 'enctype': 'multipart/form-data'}}) }}
+            <hr class="divider">
+         </div>
+      </div>
+   </div>
+<!-- Principal Content End -->
+{% endblock %}

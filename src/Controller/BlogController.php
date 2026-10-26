@@ -19,4 +19,5 @@ final class BlogController extends AbstractController
     {
         return $this->render('single_post.html.twig', []);
     }
+
 }
