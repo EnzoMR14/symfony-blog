@@ -6,12 +6,14 @@ use App\Entity\Category;
 use App\Entity\Contact;
 use App\Form\ContactFormType;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 
+#[IsGranted('ROLE_USER')]
 final class PageController extends AbstractController
 {
     #[Route('/', name: 'index')]
@@ -24,6 +26,12 @@ final class PageController extends AbstractController
         return $this->render('index.html.twig', ['categories' => $categories]);
     }
 
+
+    #[Route('/about', name: 'about')]
+    public function about(): Response
+    {
+        return $this->render('about.html.twig', []);
+    }
 
     #[Route('/contact', name: 'contact')]
     public function contact(ManagerRegistry $doctrine, Request $request): Response

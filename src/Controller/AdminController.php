@@ -26,7 +26,7 @@ class AdminController extends AbstractController
     public function images(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
         $repositorio = $doctrine->getRepository(Image::class);
-        $images = $repositorio->findAll();  
+        $images = $repositorio->findAll();
 
         $image = new Image();
         $form = $this->createForm(ImageFormType::class, $image);
@@ -38,7 +38,7 @@ class AdminController extends AbstractController
                 // El Slugger hace que el nombre del archivo sea seguro en cuanto a 
                 // caracteres especiales como espacios o acentos
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $file->guessExtension();
 
                 // El servidor almacena el archivo en un directorio temporal y
                 // debemos moverlo a su ubicación definitiva, dentro de una ruta que
@@ -48,13 +48,16 @@ class AdminController extends AbstractController
 
                     // Primero lo movemos al directorio de imágenes
                     $file->move(
-                        $this->getParameter('images_directory'), $newFilename
+                        $this->getParameter('images_directory'),
+                        $newFilename
                     );
                     $filesystem = new Filesystem();
                     // Y ahora lo duplicamos en el directorio de portfolio
                     $filesystem->copy(
-                        $this->getParameter('images_directory') . '/'. $newFilename, 
-                        $this->getParameter('portfolio_directory') . '/'.  $newFilename, true);
+                        $this->getParameter('images_directory') . '/' . $newFilename,
+                        $this->getParameter('portfolio_directory') . '/' . $newFilename,
+                        true
+                    );
 
                 } catch (FileException $e) {
                     return new Response("Error al subir el archivo: " . $e->getMessage());
@@ -63,15 +66,16 @@ class AdminController extends AbstractController
                 // asignamos el nombre del archivo, que se llama `file`, a la entidad Image
                 $image->setFile($newFilename);
             }
-            
-            $entityManager = $doctrine->getManager();    
+
+            $entityManager = $doctrine->getManager();
             $entityManager->persist($image);
             $entityManager->flush();
             return $this->redirectToRoute('app_images');
         }
         return $this->render('admin/images.html.twig', array(
-                        'form' => $form->createView(), 'images' => $images
-                    ));
+            'form' => $form->createView(),
+            'images' => $images
+        ));
     }
 
 
@@ -79,24 +83,24 @@ class AdminController extends AbstractController
     public function categories(ManagerRegistry $doctrine, Request $request): Response
     {
         $repositorio = $doctrine->getRepository(Category::class);
-        $categories = $repositorio->findAll();  
+        $categories = $repositorio->findAll();
 
         $category = new Category();
         $form = $this->createForm(CategoryFormType::class, $category);
-        $form->handleRequest($request);        
+        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $category = $form->getData();    
-            $entityManager = $doctrine->getManager();    
+            $category = $form->getData();
+            $entityManager = $doctrine->getManager();
             $entityManager->persist($category);
             $entityManager->flush();
             // redirigimos a la misma ruta para que se vea la nueva categoría añadida 
             // y no se repita el envío del formulario al recargar la página
             return $this->redirectToRoute('app_categories');
         }
-       
+
         return $this->render('admin/categories.html.twig', array(
             'form' => $form->createView(),
-            'categories' => $categories   
+            'categories' => $categories
         ));
     }
 
