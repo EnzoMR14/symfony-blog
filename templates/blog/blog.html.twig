@@ -7,20 +7,15 @@
       <!-- Blocks of Posts -->
         <div class="col-xs-12 col-sm-8 row">
 
-           {% for post in posts %}
-               {{ include('partials/_post.html.twig', {'post': post}) }}
-           {% endfor %}
+              {% for post in posts %}
+{{ include('partials/_post.html.twig', {'post': post}) }}
+{% endfor %}
 
-              <nav class="text-left">
-                <ul class="pagination">
-                  <li class="active"><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#" aria-label="suivant">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a></li>
-                </ul>
-              </nav>
+{{ include('partials/_paginador.html.twig', {
+    'page': page,
+    'totalPages': totalPages,
+    'ruta': 'blog'
+}) }}
         </div>
       <!-- End of Blog Post -->  
 
@@ -52,34 +47,12 @@
              <h4>Soluta</h4>
              <p>Quod soluta corrupti earum officia vel inventore vitae quidem, consequuntur odit impedit.</p>
            </div>
-            <h3>Recent Posts</h3>
-            <hr>
-             <div class="post">
-               <div class="post-heading">
-                 <span>10 APRIL</span>
-                 <img class="img-responsive" src="images/blog/wedding.jpg" alt="post's picture">
-               </div>
-               <div class="post-body">
-                 <span>
-                 <i class="fa fa-heart sr-icons"></i> 10
-                 <i class="fa fa-comments sr-icons"></i> 10
-                 </span>
-                 <h4 class="text-left"><a href="single_post"><strong>Aliquam soluta</strong></a></h4>
-               </div>
-             </div>
-             <div class="post">
-               <div class="post-heading">
-                 <span>12 MAY</span>
-                 <img class="img-responsive" src="images/blog/woman.jpg" alt="post's picture">
-               </div>
-               <div class="post-body">
-                 <span>
-                 <i class="fa fa-heart sr-icons"></i> 10
-                 <i class="fa fa-comments sr-icons"></i> 10
-                 </span>
-                 <h4 class="text-left"><a href="single_post"><strong>Consequuntur</strong></a></h4>
-               </div>
-             </div>
+<h3>Recent Posts</h3>
+<hr>
+{% for recent in recents %}
+    {{ include('partials/_recent_post_blog.html.twig', {'recent': recent}) }}
+{% endfor %}
+            
         </div>
       <!-- End of Side bar --> 
        

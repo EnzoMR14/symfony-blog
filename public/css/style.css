@@ -1208,3 +1208,20 @@ img{
 	margin-bottom: 20px;
 }
 /*-- End of Contact Page Stylesheet --*/
+
+/*-- Recent posts en el blog --*/
+#blog .recent-post h5,
+#blog .recent-post p,
+#blog .recent-post span {
+    color: #555;
+}
+
+#blog .recent-post a {
+    display: block;
+    clear: both;
+    padding-top: 8px;
+}
+
+#blog .col-sm-4 .post-heading {
+    min-height: 45px;
+}

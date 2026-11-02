@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+{% if not post %}
+  <div id="single">
+    <div class="container">
+      <div class="row">
+        <h2>Post not found</h2>
+      </div>
+    </div>
+  </div>
+{% else %}
+   <div id="single">
+     <div class="container">
+
+    <!-- Full Article -->
+      <div class="row">
+      <h2>{{ post.title }}</h2>
+      <hr class="subtitle">
+      <div class=" block1">
+      <div class="col-xs-12 col-sm-9">
+        <img src="{{ asset('uploads/posts/' ~ post.image) }}" alt="{{ post.title }}" class="img-responsive">
+        <p>{{ post.content }}</p>
+        <h4>- By {{ post.postUser.email }}</h4>
+        <hr>
+        <ul class="list-inline">
+          <li>{{ post.publishedAt | date('d') }} {{ post.publishedAt | date('F') }} |</li>
+          <li><a href="{{ path('post_like', {slug: post.slug}) }}">LIKE</a> <i class="fa fa-heart sr-icons"></i> {{ post.numLikes }}</li>
+          <li><a class="page-scroll" href="#form">COMMENT</a> <i class="fa fa-comments sr-icons"></i> {{post.comments|length}} |</li>
+        </ul>
+      </div>
+      <div class="col-xs-12 col-sm-3">
+        <h4>Recent Post</h4>
+        <hr class="subtitle1">
+        {% for recent in recents %}
+        {{ include ('partials/_recent_post.html.twig') }}
+        {% endfor %}
+
+      </div>
+      </div>
+      </div>
+    <!-- End of Full Article -->
+
+    <!-- Comments -->
+      <div class="row">
+      <div class="col-xs-12 col-sm-12 block2">
+        {% for comment in post.comments %}
+    {{ include('partials/_comment.html.twig', {'comment': comment}) }}
+{% else %}
+    <p>No comments yet. Be the first!</p>
+{% endfor %}
+          <hr class="line">
+          {{ include('partials/_post_comments.html.twig') }}
+      </div>
+      </div>
+    <!-- End of Comments -->  
+     </div>
+   </div>
+   
+{% endif %}
+{% endblock %}
