@@ -71,5 +71,39 @@ class PostRepository extends ServiceEntityRepository
 
         return new Paginator($query, false);
     }
+    /**
+     * @return Post[] Returns an array of Post objects
+     */
+    public function findBuscadosPaginados(string $searchTerm, int $page, int $perPage): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->andWhere('p.content LIKE :val')
+            ->setParameter('val', '%' . $searchTerm . '%')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage)
+            ->getQuery();
+
+        return new Paginator($query, false);
+    }
+    /**
+     * Página $page de los posts cuyo contenido contiene $searchTerm.
+     * count() sobre el resultado devuelve el total de coincidencias.
+     */
+    public function findByPaginados(string $searchTerm, int $page, int $perPage): Paginator
+    {
+        $query = $this->createQueryBuilder('p')
+            ->andWhere('p.content LIKE :val')
+            ->setParameter('val', '%' . $searchTerm . '%')
+            ->orderBy('p.publishedAt', 'DESC')
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage)
+            ->getQuery();
+
+        return new Paginator($query, false);
+    }
+
+
+
 
 }

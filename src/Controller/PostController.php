@@ -81,7 +81,32 @@ final class PostController extends AbstractController
     }
     private const POSTS_PER_PAGE = 5;
 
-    #[Route('/blog/{page}', name: 'blog')]
+
+
+    #[Route('/blog/buscar/{page}', name: 'blog_buscar')]
+    public function buscar(ManagerRegistry $doctrine, Request $request, int $page = 1): Response
+    {
+        $page = max(1, $page);
+
+        $repository = $doctrine->getRepository(Post::class);
+        $searchTerm = $request->query->get('searchTerm', '');
+        $posts = $repository->findBuscadosPaginados($searchTerm, $page, self::POSTS_PER_PAGE);
+        $recents = $repository->findRecents();
+
+        $total = count($posts);
+        $totalPages = max(1, (int) ceil($total / self::POSTS_PER_PAGE));
+
+        return $this->render('blog/blog.html.twig', [
+            'posts' => $posts,
+            'recents' => $recents,
+            'searchTerm' => $searchTerm,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'total' => $total,
+        ]);
+    }
+
+    #[Route('/blog/{page}', name: 'blog', requirements: ['page' => '\d+'])]
     public function index(ManagerRegistry $doctrine, int $page = 1): Response
     {
         $page = max(1, $page);
@@ -107,34 +132,6 @@ final class PostController extends AbstractController
             'total' => $total,
         ]);
     }
-
-    #[Route('/blog/buscar/{page}', name: 'blog_buscar')]
-    public function buscar(ManagerRegistry $doctrine, Request $request, int $page = 1): Response
-    {
-        $page = max(1, $page);
-
-        $repository = $doctrine->getRepository(Post::class);
-        $searchTerm = $request->query->get('searchTerm', '');
-        $posts = $repository->findBuscadosPaginados($searchTerm, $page, self::POSTS_PER_PAGE);
-        $recents = $repository->findRecents();
-
-        $total = count($posts);
-        $totalPages = max(1, (int) ceil($total / self::POSTS_PER_PAGE));
-
-        // Si piden una página que no existe, redirigimos a la última (conservando la búsqueda)
-        if ($page > $totalPages) {
-            return $this->redirectToRoute('blog_buscar', ['page' => $totalPages, 'searchTerm' => $searchTerm]);
-        }
-
-        return $this->render('blog/blog.html.twig', [
-            'posts' => $posts,
-            'recents' => $recents,
-            'searchTerm' => $searchTerm,
-            'page' => $page,
-            'totalPages' => $totalPages,
-            'total' => $total,
-        ]);
-    }
     #[Route('/single_post/{slug}/like', name: 'post_like')]
     public function like(ManagerRegistry $doctrine, $slug): Response
     {
@@ -150,7 +147,5 @@ final class PostController extends AbstractController
         return $this->redirectToRoute('single_post', ["slug" => $post->getSlug()]);
 
     }
-
-
 
 }
